@@ -31,13 +31,14 @@ jobs:
         run: |
           unzip -o AyamStopControl-CLOUD-BUILD.zip -d extracted
          
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Build APK
-        run: |
-          GRADLEW=$(find extracted -type f -name gradlew | head -n 1)
-          if [ -z "$GRADLEW" ]; then
-            echo "gradlew tidak ditemukan di dalam ZIP"
-            find extracted -maxdepth 4 -type f | head -100
-            exit 1
+        working-directory: extracted/AyamStopControl-Android
+        run: gradle assembleDebug
+
           fi
           PROJECT_DIR=$(dirname "$GRADLEW")
           cd "$PROJECT_DIR"
